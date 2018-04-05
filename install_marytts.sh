@@ -42,7 +42,7 @@ mkdir -p "$download_location" "$install_location"
 cd "$download_location"
 
 # Clone repo
-if [ -d check_dir marytts ]; then
+if ! check_dir marytts; then
     git clone $repo_url marytts
 fi
 pushd marytts
