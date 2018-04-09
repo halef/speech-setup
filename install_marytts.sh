@@ -85,6 +85,6 @@ sed -i -e "s|%%JAVA_HOME%%|${JAVA_HOME}|g" /etc/init.d/marytts
 update-rc.d marytts defaults
 
 # Set environment
-echo "export MARYTTS_HOME=${marytts_dir}" >> /etc/bash.bashrc
+echo "export MARYTTS_HOME=${install_location}" >> /etc/bash.bashrc
 
 info "Install complete. Run 'sudo service marytts start'"

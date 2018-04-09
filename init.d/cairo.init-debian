@@ -1,0 +1,106 @@
+#!/bin/sh
+### -*- mode:shell-script; indent-tabs-mode:nil; sh-basic-offset:2 -*-
+### BEGIN INIT INFO
+# Provides: cairo
+# Required-Start: $network $remote_fs $local_fs
+# Required-Stop: $network $remote_fs $local_fs
+# Should-Start: 
+# Should-Stop: 
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Cairo MRCPV2 server
+# Description: Cairo MRCPV2 server
+### END INIT INFO
+
+# Author: ETS
+
+export JAVA_HOME=%%JAVA_HOME%%
+export CAIRO_HOME=%%CAIRO_HOME%%
+export PATH=/sbin:/usr/sbin:/bin:/usr/bin:$JAVA_HOME/bin
+CAIRO_LOG=$CAIRO_HOME/logs/cairo.log
+DESC=cairo
+NAME=cairo
+DAEMON=$CAIRO_HOME/bin/start-cairo.sh
+PROGRAM=$JAVA_HOME/bin/java
+USER=cairo
+PIDFILE=$CAIRO_HOME/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+
+[ -x $DAEMON ] || exit 0
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+
+do_start() {
+  start-stop-daemon --start --quiet \
+    --pidfile $PIDFILE --make-pidfile --exec $DAEMON --name $NAME --user $USER --chuid $USER --chdir $CAIRO_HOME \
+    --test > $CAIRO_LOG 2>&1 || return 1
+
+  start-stop-daemon --start --quiet \
+    --pidfile $PIDFILE --make-pidfile --exec $DAEMON --name $NAME --user $USER --chuid $USER --chdir $CAIRO_HOME >> $CAIRO_LOG 2>&1 \
+    || return 2
+
+  return 0
+}
+
+do_stop() {
+  start-stop-daemon --stop --quiet  --pidfile $PIDFILE --name $NAME --retry=TERM/30/KILL/5
+  RETVAL="$?"
+  [ "$RETVAL" = 2 ] && return 2
+  rm -f $PIDFILE
+  pkill -9 -f cairo >> $CAIRO_LOG 2>&1
+  return "0"
+}
+
+do_status() {
+  start-stop-daemon \
+    --start \
+    --test \
+    --oknodo \
+    --pidfile $PIDFILE \
+    --user $USER \
+    --exec $PROGRAM
+}
+
+case "$1" in
+  start)
+    [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC " "$NAME"
+    do_start
+    case "$?" in
+      0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+      2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+    esac
+    ;;
+  stop)
+    [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+    do_stop
+    case "$?" in
+      0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+      2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+    esac
+    ;;
+  status)
+    do_status
+    ;;
+  restart)
+    log_daemon_msg "Restarting $DESC" "$NAME"
+    do_stop
+    case "$?" in
+      0|1)
+        do_start
+        case "$?" in
+          0) log_end_msg 0 ;;
+          1|*) log_end_msg 1 ;;
+        esac
+        ;;
+      *) log_end_msg 1 ;;
+    esac
+    ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|status|restart}" >&2
+    exit 3
+    ;;
+esac
+
+exit 0
