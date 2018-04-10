@@ -15,8 +15,7 @@ branch=master
 cleanup() {
     if [ $? -ne 0 ]; then
         # TODO(langep): Conditional cleanup based on where error happend
-        #rm -rf "$install_location"
-        :
+        rm -rf "$install_location"
     fi
 }
 
