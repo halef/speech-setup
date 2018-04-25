@@ -40,8 +40,8 @@ cd cassandra
 git checkout $branch
 git pull
 
-libws_dir=${download_location}/halef-cassandra/communication/libwebsockets
-kaldi_dir=${download_location}/halef-cassandra/kaldi-trunk
+libws_dir=${download_location}/cassandra/communication/libwebsockets
+kaldi_dir=${download_location}/cassandra/kaldi-trunk
 
 info "Building libwebsockets"
 mkdir -p ${libws_dir}/build
