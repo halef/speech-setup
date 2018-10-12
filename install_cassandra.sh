@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Set paramaters
 # TODO(langep): Make parameters configurable
-download_location=~/src
+download_location=/usr/local/src
 install_location=/opt/cassandra
 repo_url=https://git.code.sf.net/p/halef/cassandra
 branch=master
