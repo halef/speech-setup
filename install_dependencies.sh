@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Set paramaters
 # TODO(langep): Make parameters configurable
-download_location=~/src
+download_location=/usr/local/src
 install_location=/opt/tools
 gradle_version=3.4.1
 maven_version=3.3.9
