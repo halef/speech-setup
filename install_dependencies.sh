@@ -11,8 +11,8 @@ install_location=/opt/tools
 gradle_version=3.4.1
 maven_version=3.3.9
 
-jdk_archive=jdk-8u181-linux-x64.tar.gz
-jdk_url=http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/${jdk_archive}
+jdk_archive=jdk-8u191-linux-x64.tar.gz
+jdk_url=http://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/${jdk_archive}
 
 gradle_archive=gradle-${gradle_version}-bin.zip
 maven_archive=apache-maven-${maven_version}-bin.tar.gz
