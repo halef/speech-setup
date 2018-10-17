@@ -8,8 +8,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # TODO(langep): Make parameters configurable
 download_location=~/src
 install_location=/opt/cassandra
-repo_url=https://git.code.sf.net/p/halef/cassandra
+repo_url=https://github.com/halef/halef-asr.git
 branch=master
+lws_repo_url=https://github.com/halef/libwebsockets.git
+lws_branch=v1.5-stable
+kaldi_repo_url=https://github.com/halef/kaldi.git
+kaldi_branch=5.2
 
 # Cleanup trap in case of error
 cleanup() {
@@ -32,7 +36,39 @@ require_command git
 mkdir -p "$download_location" "$install_location"
 cd "$download_location"
 
-# Clone repo
+# Libwebsockets setup
+cd ${download_location}
+if ! check_dir libwebsockets; then
+    git clone $lws_repo_url libwebsockets
+fi
+cd libwebsockets
+git checkout $lws_branch
+git pull
+libws_dir=${download_location}/libwebsockets
+
+mkdir -p ${libws_dir}/build
+cd ${libws_dir}/build
+cmake ..
+make
+
+# Kaldi setup
+cd ${download_location}
+if ! check_dir kaldi; then
+    git clone $kaldi_repo_url kaldi
+fi
+cd kaldi
+git checkout $kaldi_branch
+git pull
+kaldi_dir=${download_location}/kaldi
+
+cd ${kaldi_dir}/tools
+make -j 4
+cd ${kaldi_dir}/src
+./configure
+make depend -j 4
+make -j 4
+
+# Clone cassandra repo and build it
 if ! check_dir cassandra; then
     git clone $repo_url cassandra
 fi
@@ -40,26 +76,10 @@ cd cassandra
 git checkout $branch
 git pull
 
-libws_dir=${download_location}/cassandra/communication/libwebsockets
-kaldi_dir=${download_location}/cassandra/kaldi-trunk
-
-info "Building libwebsockets"
-mkdir -p ${libws_dir}/build
-cd ${libws_dir}/build
-cmake ..
-make
-
-info "Building kaldi"
-cd ${kaldi_dir}/tools
-make -j 2
-cd ${kaldi_dir}/src
-./configure
-make depend -j 2
-make -j 2
+LIBWEB_BUILD=${libws_dir}/build KALDI_SRC=${kaldi_dir}/src make
 
 mkdir -p ${install_location}/bin
-cp online2bin/STRM-ASR-server ${install_location}/bin/.
+cp STRM-ASR-server ${install_location}/bin/.
 
 echo "export CASSANDRA_HOME=${cassandra_dir}" >> /etc/bash.bashrc
-
 info "Script work done."
