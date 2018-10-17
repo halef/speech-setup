@@ -10,7 +10,7 @@
 # ------ ---------- ------------------------------------------
 #  51811 -rw-rw-r-- jsapi.jar
 #
-more <<- xxxFOOxxx
+cat <<- xxxFOOxxx
 
                           Sun Microsystems, Inc. 
                       Binary Code License Agreement

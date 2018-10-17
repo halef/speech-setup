@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Set paramaters
 # TODO(langep): Make parameters configurable
-download_location=~/src
+download_location=/usr/local/src
 install_location=/opt/marytts
 repo_url=https://github.com/marytts/marytts.git
 branch=master

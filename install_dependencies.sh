@@ -6,22 +6,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Set paramaters
 # TODO(langep): Make parameters configurable
-download_location=~/src
+download_location=/usr/local/src
 install_location=/opt/tools
 gradle_version=3.4.1
 maven_version=3.3.9
 
-jdk_archive=jdk-8u181-linux-x64.tar.gz
-jdk_url=http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/${jdk_archive}
+jdk_name=jdk1.8.0_191
+jdk_archive=jdk-8u191-linux-x64.tar.gz
+jdk_url=http://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/${jdk_archive}
 
 gradle_archive=gradle-${gradle_version}-bin.zip
-maven_archive=apache-maven-${maven_version}-bin.tar.gz
 gradle_url=https://downloads.gradle.org/distributions/${gradle_archive}
-maven_url=http://www-eu.apache.org/dist/maven/maven-3/${maven_version}/binaries/${maven_archive}
-
-maven_name=${maven_archive%-bin.tar.gz}
 gradle_name=${gradle_archive%-bin.zip}
-jdk_name=jdk1.8.0_161
+
+maven_archive=apache-maven-${maven_version}-bin.tar.gz
+maven_url=http://www-eu.apache.org/dist/maven/maven-3/${maven_version}/binaries/${maven_archive}
+maven_name=${maven_archive%-bin.tar.gz}
 
 # Cleanup trap in case of error
 cleanup() {
@@ -72,8 +72,8 @@ ln -s ${install_location}/${gradle_name} "${install_location}/gradle"
 cp -r $jdk_name "${install_location}/${jdk_name}"
 ln -s ${install_location}/${jdk_name} "${install_location}/java"
 
-info "Press [Q] to install JSAPI"
-sh ${SCRIPT_DIR}/jsapi.sh
+info "Accepting JSAPI terms"
+yes | sh ${SCRIPT_DIR}/jsapi.sh
 mkdir -p ${install_location}/java/lib/ext
 mv jsapi.jar ${install_location}/java/lib/ext/jsapi-1.0.jar
 
