@@ -11,17 +11,19 @@ install_location=/opt/tools
 gradle_version=3.4.1
 maven_version=3.3.9
 
+jdk_name=jdk1.8.0_191
 jdk_archive=jdk-8u191-linux-x64.tar.gz
 jdk_url=http://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/${jdk_archive}
 
+gradle_name=${gradle_archive%-bin.zip}
 gradle_archive=gradle-${gradle_version}-bin.zip
-maven_archive=apache-maven-${maven_version}-bin.tar.gz
 gradle_url=https://downloads.gradle.org/distributions/${gradle_archive}
-maven_url=http://www-eu.apache.org/dist/maven/maven-3/${maven_version}/binaries/${maven_archive}
 
 maven_name=${maven_archive%-bin.tar.gz}
-gradle_name=${gradle_archive%-bin.zip}
-jdk_name=jdk1.8.0_161
+maven_archive=apache-maven-${maven_version}-bin.tar.gz
+maven_url=http://www-eu.apache.org/dist/maven/maven-3/${maven_version}/binaries/${maven_archive}
+
+
 
 # Cleanup trap in case of error
 cleanup() {
