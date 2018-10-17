@@ -72,8 +72,8 @@ ln -s ${install_location}/${gradle_name} "${install_location}/gradle"
 cp -r $jdk_name "${install_location}/${jdk_name}"
 ln -s ${install_location}/${jdk_name} "${install_location}/java"
 
-info "Press [Q] to install JSAPI"
-sh ${SCRIPT_DIR}/jsapi.sh
+info "Accepting JSAPI terms"
+yes | sh ${SCRIPT_DIR}/jsapi.sh
 mkdir -p ${install_location}/java/lib/ext
 mv jsapi.jar ${install_location}/java/lib/ext/jsapi-1.0.jar
 
