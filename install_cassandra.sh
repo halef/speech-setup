@@ -48,7 +48,7 @@ libws_dir=${download_location}/libwebsockets
 
 mkdir -p ${libws_dir}/build
 cd ${libws_dir}/build
-cmake ..
+cmake -DLWS_WITH_SSL=0 ..
 make
 
 # Kaldi setup
